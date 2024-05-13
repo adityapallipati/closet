@@ -11,7 +11,6 @@ export default async function HomePage() {
 
   return (
     <main className="" >
-      {/* mock db test */}
       <HomeImage />
     </main>
   );
