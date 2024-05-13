@@ -1,9 +1,20 @@
 import Link from "next/link";
+import { db } from "../server/db/index";
+import HomeImage  from "../components/HomeImage";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+
+  const posts = await db.query.posts.findMany();
+
+  console.log(posts);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <h1>Hello, Closet App in progres ...</h1>
+    <main className="" >
+      {/* mock db test */}
+      {posts.map(post => (<div key={post.id}>{post.name}</div>))}
+      <HomeImage />
     </main>
   );
 }
