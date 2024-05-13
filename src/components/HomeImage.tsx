@@ -4,7 +4,7 @@ import {db} from "~/server/db";
 
 
 export default async function HomeImage() {
-    const homeIcon = await db.query.posts.findMany()
+    const homeIcon = await db.query.posts.findMany();
     return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="flex flex-wrap gap-4">
