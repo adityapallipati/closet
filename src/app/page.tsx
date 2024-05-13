@@ -12,7 +12,6 @@ export default async function HomePage() {
   return (
     <main className="" >
       {/* mock db test */}
-      {posts.map(post => (<div key={post.id}>{post.name}</div>))}
       <HomeImage />
     </main>
   );
