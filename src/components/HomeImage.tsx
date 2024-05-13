@@ -1,4 +1,4 @@
-import {db} from "../server/db/index";
+import {db} from "~/server/db";
 
 
 export default async function HomeImage() {

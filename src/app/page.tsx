@@ -1,4 +1,4 @@
-import { db } from "../server/db/index";
+import { db } from "~/server/db";
 import HomeImage  from "../components/HomeImage";
 
 export const dynamic = "force-dynamic";
