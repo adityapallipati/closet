@@ -1,4 +1,4 @@
-import HomeImage  from "../components/HomeImage";
+import HomeImage  from "../_components/HomeImage";
 
 export const dynamic = "force-dynamic";
 
