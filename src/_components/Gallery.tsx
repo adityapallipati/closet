@@ -1,10 +1,13 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { db } from "~/server/db";
+
+import { getMyImages } from "~/server/queries";
 // when i give user upload as an option need to force people to only have a the name like this 
-// yproject-paris-best-distressed-cotton-sweatshirt-item-20261256 
+// yproject-paris-best-distressed-cotton-sweatshirt-item-20261256
+
 export default async function Gallery() {
-    const homeIcon = await db.query.posts.findMany();
+
+    const homeIcon = await getMyImages();
     const formatName = (name: string): string => {
         // Remove the file extension
         const nameWithoutExtension = name.replace(/\.[^/.]+$/, "");
