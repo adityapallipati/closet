@@ -5,7 +5,7 @@ import { db } from "~/server/db";
 import { posts } from "~/server/db/schema";
 
 const f = createUploadthing();
-
+//
 
 export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" , maxFileCount: 40} })
