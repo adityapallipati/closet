@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-
+import Image from "next/image";
 import { getMyImages } from "~/server/queries";
 // when i give user upload as an option need to force people to only have a the name like this 
 // yproject-paris-best-distressed-cotton-sweatshirt-item-20261256
@@ -23,9 +23,15 @@ export default async function Gallery() {
     return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-screen-lg mx-auto">
-                {[...homeIcon].map((image, index) => (
-                    <div key={image.id + "-" + index} className="w-full p-4">
-                        <img src={image.url} className="w-full h-auto object-cover" />
+                {homeIcon.map((image) => (
+                    <div key={image.id} className="w-full p-4">
+                        <Image 
+                        src={image.url} 
+                        style={{ objectFit: "contain" }}
+                        width={480}
+                        height={480}
+                        alt={"images"}
+                        />
                         <h1 className="text-center whitespace-pre-line">{formatName(image.name)}</h1>
                     </div>
                 ))}
