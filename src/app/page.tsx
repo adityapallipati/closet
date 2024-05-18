@@ -14,22 +14,27 @@ export const dynamic = "force-dynamic";
 async function Gallery() {
 
     const images = await getMyImages();
-    const formatName = (name: string): string => {
-        // Remove the file extension
-        const nameWithoutExtension = name.replace(/\.[^/.]+$/, "");
-        // Split the name into parts
-        const parts = nameWithoutExtension.split("-");
-        // Extract the item number
-        const itemNumber = parts.pop();
-        // Capitalize each word and join them
-        const formattedName = parts.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-        return `${formattedName}\nItem: ${itemNumber}`;
-    };
+    const formatName = (name: string): { formattedName: string; itemNumber: string } => {
+      // Remove the file extension
+      const nameWithoutExtension = name.replace(/\.[^/.]+$/, "");
+      // Split the name into parts
+      const parts = nameWithoutExtension.split("-");
+      // Extract the item number
+      const itemNumber = parts.pop() ?? "";
+      // Remove the word "Item" if it exists
+      const filteredParts = parts.filter(word => word.toLowerCase() !== "item");
+      // Capitalize each word and join them
+      const formattedName = filteredParts.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+      return { formattedName, itemNumber };
+  };
+
 
     return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-screen-lg mx-auto">
-                {images.map((image: { id: Key | null | undefined; url: string | StaticImport; name: string; }) => (
+                {images.map((image: { id: Key | null | undefined; url: string | StaticImport; name: string; }) => {
+                  const { formattedName, itemNumber } = formatName(image.name);
+                return (
                     <div key={image.id} className="w-full p-4">
                         <Link href={`/img/${image.id}`}>
                         <Image 
@@ -40,9 +45,10 @@ async function Gallery() {
                         alt={"images"}
                         />
                         </Link>
-                        <h1 className="text-center whitespace-pre-line">{formatName(image.name)}</h1>
+                        <h1 className="pt-4 gap-4 flex flex-row text-center whitespace-pre-line items-center">{formattedName} Item: {itemNumber}</h1>
                     </div>
-                ))}
+                );
+            })}
             </div>
         </div>
     );

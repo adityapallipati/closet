@@ -1,4 +1,4 @@
-import { SignIn, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"; 
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"; 
 import { SimpleUploadButton } from "./simple-upload-button";
 // import { UploadButton } from "~/utils/uploadthing";
 
