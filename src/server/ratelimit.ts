@@ -1,13 +1,9 @@
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
+import { Redis } from "@upstash/redis"; // see below for cloudflare and fastly adapters
 
 // Create a new ratelimiter, that allows 10 requests per 10 seconds
 export const ratelimit = new Ratelimit({
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-  redis: new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
-  }),
+  redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(10, "100 s"),
   analytics: true,
   /**
