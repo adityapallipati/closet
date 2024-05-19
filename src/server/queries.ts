@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import "server-only";
 
 import { db } from "./db";
@@ -43,6 +44,7 @@ export async function deleteImage(id: number) {
       .where(and(eq(posts.id, id), eq(posts.userId, user.userId)));
 
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       analyticsServerClient.capture({
         distinctId: user.userId,
         event: "delete-image",
