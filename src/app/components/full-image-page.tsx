@@ -1,8 +1,14 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { getImage } from "~/server/queries";
+import { Button } from "~/components/ui/button";
+import { deleteImage, getImage } from "~/server/queries";
 
 export default async function FullPageImageView(props: { id: number }) {
-    const image = await getImage(props.id);
+    const idAsNumber = Number(props.id);
+    if (Number.isNaN(idAsNumber)) throw new Error("Invalid photo id");
+
+    const image = await getImage(idAsNumber);
+
+    const userInfo = await clerkClient.users.getUser(image.userId);
 
     const formatName = (name: string): { formattedName: string; itemNumber: string } => {
         // Remove the file extension
@@ -19,31 +25,36 @@ export default async function FullPageImageView(props: { id: number }) {
     };
 
     const { formattedName, itemNumber } = formatName(image.name);
-    
-    const uploaderInfo = await clerkClient.users.getUser(image.userId);
+
     return (
+        <div className="flex flex-col md:flex-row w-full h-full min-w-0 bg-black overflow-x-hidden p-4">
+            <img src={image.url} className="w-full md:w-1/2 object-contain mb-4 md:mb-0 md:mr-4" />
 
-        <div className="flex w-full h-full min-w-0 bg-black overflow-x-hidden p-4">
-
-            <img src={image.url} className="flex-shrink object-contain" />
-
-            <div className="w-48 flex-shrink-0 flex-col border-l">
+            <div className="flex-shrink-0 flex-col border-l border-white md:pl-4">
                 <div className="text-xl font-bold text-white p-5">
-                    <div className="w-screen p-2 border-white">{formattedName.toUpperCase()}</div>
-                    <br />
-                    <div className="w-screen p-2">ITEM: {itemNumber}</div>
+                    <div className="text-left p-2 border-b border-white">{formattedName.toUpperCase()}</div>
+                    <div className="text-left p-2">ITEM: {itemNumber}</div>
 
-                    <div className="p-2 w-screen flex flex-col">
-                        <span>Uploaded By: {uploaderInfo.fullName} </span>
+                    <div className="text-left p-2 flex flex-col">
+                        <span>Uploaded By: {userInfo.fullName}</span>
                     </div>
 
-                    <div className="p-2 w-screen flex flex-col">
-                        <span>Created On: {new Date(image.createdAt).toLocaleDateString()} </span>
+                    <div className="p-2 text-left flex flex-col">
+                        <span>Created On: {new Date(image.createdAt).toLocaleDateString()}</span>
+                    </div>
+
+                    <div className="p-2 pt-3 text-left flex flex-col">
+                        <form action={async () => {
+                            "use server";
+                            await deleteImage(idAsNumber);
+                        }}>
+                            <Button type="submit" variant="destructive">
+                                Delete
+                            </Button>
+                        </form>
                     </div>
                 </div>
             </div>
-            </div>
-
-
+        </div>
     );
 }
