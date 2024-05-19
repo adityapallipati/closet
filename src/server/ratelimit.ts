@@ -3,7 +3,11 @@ import { Redis } from "@upstash/redis";
 
 // Create a new ratelimiter, that allows 10 requests per 10 seconds
 export const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  redis: new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL!,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+  }),
   limiter: Ratelimit.slidingWindow(10, "100 s"),
   analytics: true,
   /**
